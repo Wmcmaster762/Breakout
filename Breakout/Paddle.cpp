@@ -65,3 +65,15 @@ void Paddle::setWidth(float coeff, float duration)
     float newX = _sprite.getPosition().x + (_width - PADDLE_WIDTH) / 2;
     _sprite.setPosition(newX, _sprite.getPosition().y);
 }
+
+void Paddle::mouseMovement(float dt)
+{
+    float position = _sprite.getPosition().x;
+
+    if (position < _window->getSize().x - _width) {
+    
+        _sprite.move(sf::Vector2f(sf::Mouse::getPosition().x, 0));
+    
+    }
+
+}

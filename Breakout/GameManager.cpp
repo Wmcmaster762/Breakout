@@ -80,6 +80,7 @@ void GameManager::update(float dt)
     // move paddle
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) _paddle->moveRight(dt);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) _paddle->moveLeft(dt);
+    //_paddle->mouseMovement(dt);
 
     // update everything 
     _paddle->update(dt);

@@ -4,7 +4,7 @@
 PowerupFireBall::PowerupFireBall(sf::RenderWindow* window, Paddle* paddle, Ball* ball)
     : PowerupBase(window, paddle, ball)
 {
-    _sprite.setFillColor(ballEffectsColour);
+    _sprite.setFillColor(extraBallEffectsColour);
 }
 
 PowerupFireBall::~PowerupFireBall()
