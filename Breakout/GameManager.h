@@ -34,6 +34,7 @@ private:
     float _timeLastPowerupSpawned;
     int _lives;
     bool _levelComplete;
+    sf::Vector2i mousePos;
     std::pair<POWERUPS, float> _powerupInEffect;
 
     sf::Font _font;
