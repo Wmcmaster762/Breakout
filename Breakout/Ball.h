@@ -19,6 +19,7 @@ public:
 private:
     sf::CircleShape _sprite;
     sf::Vector2f _direction;
+    sf::Vector2f _velocityVec;
     sf::RenderWindow* _window;
     float _velocity;
     bool _isAlive;
@@ -37,6 +38,9 @@ private:
     const float trailUpdateInterval = 0.015f;
 
     void updateTrail(float dt);
+
+    //sf::Vector2f normalize(const sf::Vector2f& vec);
+    //sf::Vector2f normalize(const sf::Vector2f& velocity, const sf::Vector2f& normal);
 
 };
 

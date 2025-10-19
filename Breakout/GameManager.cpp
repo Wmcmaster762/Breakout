@@ -23,7 +23,6 @@ void GameManager::initialize()
     _ball = new Ball(_window, 400.0f, this); 
     _powerupManager = new PowerupManager(_window, _paddle, _ball);
     _ui = new UI(_window, _lives, this);
-    _cameraView = _window->getDefaultView();
 
     // Create bricks
     _brickManager->createBricks(5, 10, 80.0f, 30.0f, 5.0f);
@@ -31,6 +30,7 @@ void GameManager::initialize()
 
 void GameManager::update(float dt)
 {
+    UpdateScreenShake(dt);
     _powerupInEffect = _powerupManager->getPowerupInEffect();
     _ui->updatePowerupText(_powerupInEffect);
     _powerupInEffect.second -= dt;
@@ -94,8 +94,6 @@ void GameManager::update(float dt)
     _paddle->update(dt);
     _ball->update(dt);
     _powerupManager->update(dt);
-    _screenShake.Update(dt, _cameraView);
-    _window->setView(_cameraView);
 }
 
 void GameManager::loseLife()
@@ -104,13 +102,54 @@ void GameManager::loseLife()
     _ui->lifeLost(_lives);
 
     // trigger screen shake.
-    _screenShake.StartShake(0.5f,15.f,0.08f,_cameraView);
+    StartShake(0.5f,15.f,0.08f);
+}
+
+void GameManager::StartShake(float duration, float intensity, float fade)
+{
+    // save the center of the view
+    if (!isShaking) {
+        originalCenter = _window->getView().getCenter();
+    }
+    shakeDuration = duration;
+    shakeIntensity = intensity;
+    shakeFade = fade;
+    isShaking = true;
+}
+
+void GameManager::UpdateScreenShake(float dt)
+{
+    if (isShaking) {
+        sf::View view = _window->getView();
+
+        if (shakeDuration > 0) {
+            // set screens view to original center plus the offset
+            offset = GetRandomOffset() * shakeIntensity;
+
+            // apply fading
+            shakeIntensity *= (1.0f - shakeFade);
+
+            view.setCenter(originalCenter + offset);
+            _window->setView(view);
+        }
+        else {
+            isShaking = false;
+            view.setCenter(originalCenter); // reset view to original center
+            _window->setView(view);
+        }
+        // decrease shake duration
+        shakeDuration -= dt;
+    }
+}
+
+sf::Vector2f GameManager::GetRandomOffset()
+{
+    sf::Vector2f off = sf::Vector2f(((rand() % 100) / 100 * 2 - 1), ((rand() % 100) / 100 * 2 - 1));
+    return off;
 }
 
 void GameManager::render()
 {
-    _window->setView(_cameraView);
-
     _paddle->render();
     _ball->render();
     _brickManager->render();

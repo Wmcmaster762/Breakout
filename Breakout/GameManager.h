@@ -7,7 +7,6 @@
 #include "PowerupManager.h"
 #include "MessagingSystem.h"
 #include "UI.h"
-#include "ScreenShake.h"
 
 
 
@@ -20,6 +19,8 @@ public:
     void render();
     void levelComplete();
     void powerupEffect(POWERUPS pu, float t);
+    void StartShake(float duration, float intensity, float fade);
+    void UpdateScreenShake(float dt);
 
     Paddle* getPaddle() const;
     BrickManager* getBrickManager() const;
@@ -42,15 +43,24 @@ private:
     sf::Text _masterText;
 
     sf::RenderWindow* _window;
-    sf::View _cameraView;
     Paddle* _paddle;
     Ball* _ball;
     BrickManager* _brickManager;
     PowerupManager* _powerupManager;
     MessagingSystem* _messagingSystem;
     UI* _ui;
-    ScreenShake _screenShake;
 
     static constexpr float PAUSE_TIME_BUFFER = 0.5f;
     static constexpr float POWERUP_FREQUENCY = 7.5f;    // time between minimum powerup spawn
+
+
+    // screenshake variables
+    bool isShaking;
+    float shakeDuration;
+    float shakeIntensity;
+    float shakeFade;
+    sf::Vector2f originalCenter;
+    sf::Vector2f offset;
+
+    sf::Vector2f GetRandomOffset();
 };
