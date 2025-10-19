@@ -33,3 +33,6 @@ fire ball (green)
 
 # Time Details and Changelist
 <Add information to this section about the time you've taken for this task along with a professional changelist.>
+Fixed circular dependancy bug in PowerUpBase.h and PowerUpFireBall.h by removing #include "PowerUpFireBall.h" from PowerUpBase.h (Time taken: 10 mins)
+Changes the colour of the firball powerup to correctly match the intended green (Time taken: 2 mins)
+Added mouse movement for the paddle (Time taken: 30 mins)
