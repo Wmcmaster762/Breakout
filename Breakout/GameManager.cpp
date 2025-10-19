@@ -23,6 +23,7 @@ void GameManager::initialize()
     _ball = new Ball(_window, 400.0f, this); 
     _powerupManager = new PowerupManager(_window, _paddle, _ball);
     _ui = new UI(_window, _lives, this);
+    _cameraView = _window->getDefaultView();
 
     // Create bricks
     _brickManager->createBricks(5, 10, 80.0f, 30.0f, 5.0f);
@@ -93,6 +94,8 @@ void GameManager::update(float dt)
     _paddle->update(dt);
     _ball->update(dt);
     _powerupManager->update(dt);
+    _screenShake.Update(dt, _cameraView);
+    _window->setView(_cameraView);
 }
 
 void GameManager::loseLife()
@@ -100,11 +103,14 @@ void GameManager::loseLife()
     _lives--;
     _ui->lifeLost(_lives);
 
-    // TODO screen shake.
+    // trigger screen shake.
+    _screenShake.StartShake(0.5f,15.f,0.08f,_cameraView);
 }
 
 void GameManager::render()
 {
+    _window->setView(_cameraView);
+
     _paddle->render();
     _ball->render();
     _brickManager->render();

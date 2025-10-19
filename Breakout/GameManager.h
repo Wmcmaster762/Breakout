@@ -7,6 +7,7 @@
 #include "PowerupManager.h"
 #include "MessagingSystem.h"
 #include "UI.h"
+#include "ScreenShake.h"
 
 
 
@@ -41,12 +42,14 @@ private:
     sf::Text _masterText;
 
     sf::RenderWindow* _window;
+    sf::View _cameraView;
     Paddle* _paddle;
     Ball* _ball;
     BrickManager* _brickManager;
     PowerupManager* _powerupManager;
     MessagingSystem* _messagingSystem;
     UI* _ui;
+    ScreenShake _screenShake;
 
     static constexpr float PAUSE_TIME_BUFFER = 0.5f;
     static constexpr float POWERUP_FREQUENCY = 7.5f;    // time between minimum powerup spawn
