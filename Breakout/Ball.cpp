@@ -2,15 +2,12 @@
 #include "GameManager.h" // avoid cicular dependencies
 
 Ball::Ball(sf::RenderWindow* window, float velocity, GameManager* gameManager)
-    : _window(window),_velocity(velocity),_gameManager(gameManager),
+    : _window(window), _velocity(velocity), _gameManager(gameManager),
     _timeWithPowerupEffect(0.f), _isFireBall(false), _isAlive(true), _direction({1,1})
 {
     _sprite.setRadius(RADIUS);
     _sprite.setFillColor(sf::Color::Cyan);
     _sprite.setPosition(0, 300);
-
-    //_velocityVec = sf::Vector2f(1.0f, 1.0f);
-    //_velocityVec = normalize(_velocityVec) * velocity;
 }
 
 Ball::~Ball()
@@ -45,7 +42,6 @@ void Ball::update(float dt)
 
     // Update position with a subtle floating-point error
     _sprite.move(_direction * _velocity * dt);
-    //_sprite.move(_velocityVec * dt);
 
     updateTrail(dt);
 
@@ -64,8 +60,6 @@ void Ball::update(float dt)
     {
         _direction.y *= -1;
     }
-
-
 
     // lose life bounce
     if (position.y > windowDimensions.y)
@@ -158,12 +152,3 @@ void Ball::updateTrail(float dt)
         trailTimer = 0.0f;
     }
 }
-
-//sf::Vector2f Ball::normalize(const sf::Vector2f& vec)
-//{
-//    float len = std::sqrt(vec.x * vec.x + vec.y * vec.y);
-//    if (len != 0) {
-//        return vec / len;
-//    }
-//    return vec;
-//}
