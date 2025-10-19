@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <deque>
 
 
 class GameManager;  // forward declaration
@@ -29,5 +30,13 @@ private:
 
     static constexpr float RADIUS = 10.0f;      
     static constexpr float VELOCITY = 350.0f;   // for reference.
+
+    std::deque<sf::Vector2f> trailPos;
+    const int trailLength = 100;
+    float trailTimer = 0.0f;
+    const float trailUpdateInterval = 0.015f;
+
+    void updateTrail(float dt);
+
 };
 

@@ -43,6 +43,8 @@ void Ball::update(float dt)
     // Update position with a subtle floating-point error
     _sprite.move(_direction * _velocity * dt);
 
+    updateTrail(dt);
+
     // check bounds and bounce
     sf::Vector2f position = _sprite.getPosition();
     sf::Vector2u windowDimensions = _window->getSize();
@@ -94,6 +96,26 @@ void Ball::update(float dt)
 
 void Ball::render()
 {
+    // iterate over each point in trailPos
+    for (size_t i = 0; i < trailPos.size(); i++) {
+        // decrease the alphaFactor as i increases so that earlier points in the trail are more transparent
+        float alphaFactor = 1.0f - static_cast<float>(i) / trailPos.size();
+        sf::Uint8 alpha = static_cast<sf::Uint8>(alphaFactor * 255);
+
+        sf::CircleShape trailDot(RADIUS * (0.75f + 0.25f * alphaFactor));
+        trailDot.setPosition(trailPos[i]);
+        // Fireball effect
+        if (_isFireBall)
+        {
+            // Flickering effect
+            int flicker = rand() % 50 + 205; // Random value between 205 and 255
+            trailDot.setFillColor(sf::Color(flicker, flicker / 2, alpha)); // Orange flickering color
+        }
+        else {
+            trailDot.setFillColor(sf::Color(0, 255, 255, alpha));
+        }
+        _window->draw(trailDot);
+    }
     _window->draw(_sprite);
 }
 
@@ -113,4 +135,20 @@ void Ball::setFireBall(float duration)
     }
     _isFireBall = false;
     _timeWithPowerupEffect = 0.f;    
+}
+
+void Ball::updateTrail(float dt)
+{
+    // slow trails removal
+    trailTimer += dt;
+    if (trailTimer >= trailUpdateInterval) {
+        // add current ball position to front of trailPos deque
+        trailPos.push_front(_sprite.getPosition());
+
+        // limit number of balls in the trail
+        if (trailPos.size() > trailLength) {
+            trailPos.pop_back();
+        }
+        trailTimer = 0.0f;
+    }
 }
