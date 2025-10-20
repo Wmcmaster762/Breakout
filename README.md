@@ -38,4 +38,6 @@ fire ball (green)
 * Added mouse movement for the paddle (Time taken: 30 mins)
 * Added ball trail (Time taken: 40 mins)
 * Added screen shake (Time taken: 1 hour 20 mins)
-* Background colour randomly changes when ball collides with bricks (30 mins)
+* Added escape to close game window for convenience (Time taken: 2 mins);
+* Background colour randomly changes when ball collides with bricks (Time taken: 30 mins)
+* Added function to restart the game (Time taken: 10 mins)
