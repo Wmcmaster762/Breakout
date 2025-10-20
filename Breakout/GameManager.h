@@ -21,6 +21,7 @@ public:
     void powerupEffect(POWERUPS pu, float t);
     void StartShake(float duration, float intensity, float fade);
     void UpdateScreenShake(float dt);
+    void RestartGame();
     void ChangeBackground();
     sf::Color GetBackground();
 

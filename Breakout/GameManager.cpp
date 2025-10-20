@@ -35,15 +35,19 @@ void GameManager::update(float dt)
     _ui->updatePowerupText(_powerupInEffect);
     _powerupInEffect.second -= dt;
     
-
+    //restart game on press R
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+    {
+        RestartGame();
+    }
     if (_lives <= 0)
     {
-        _masterText.setString("Game over.");
+        _masterText.setString("Game over. Press R to restart");
         return;
     }
     if (_levelComplete)
     {
-        _masterText.setString("Level completed.");
+        _masterText.setString("Level completed. Press R to restart");
         return;
     }
     // pause and pause handling
@@ -153,6 +157,30 @@ void GameManager::UpdateScreenShake(float dt)
     }
 }
 
+void GameManager::RestartGame()
+{
+    // delete objects
+    delete _paddle;
+    delete _brickManager;
+    delete _messagingSystem;
+    delete _ball;
+    delete _powerupManager;
+    delete _ui;
+
+    // reset variables
+    _lives = 3;
+    _pause = false;
+    _time = 0;
+    _pauseHold = 0;
+    _levelComplete = false;
+    _powerupInEffect = {none,0.0f};
+    _timeLastPowerupSpawned = 0.0f;
+    _masterText.setString("");
+
+    // re-initialize deleted objects
+    initialize();
+}
+
 sf::Vector2f GameManager::GetRandomOffset()
 {
     // ensures the offset is between -1 and 1
@@ -166,23 +194,18 @@ void GameManager::ChangeBackground()
     switch (rand() % 5)
     {
     case 0:
-        printf("should be blueish");
         _backgroundColour = sf::Color(100.f, 150.f, 200.f);
         break;
     case 1:
-        printf("should be black");
         _backgroundColour = sf::Color(0.f, 0.f, 0.f);
         break;
     case 2:
-        printf("should be green");
         _backgroundColour = sf::Color(5.f, 242.f, 68.f);        
         break;
     case 3:
-        printf("should be pink");
         _backgroundColour = sf::Color(242.f, 5.f, 238.f);
         break;
     case 4:
-        printf("should be orange");
         _backgroundColour = sf::Color(242.f, 171.f, 5.f);
         break;
     case 5:
