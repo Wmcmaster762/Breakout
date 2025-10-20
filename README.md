@@ -43,3 +43,4 @@ fire ball (green)
 * Added escape to close game window for convenience (Time taken: 2 mins);
 * Background colour randomly changes when ball collides with bricks (Time taken: 30 mins)
 * Added function to restart the game (Time taken: 10 mins)
+* Ball and ball trail change colour based on collision with bricks and paddle. (Time taken: 20 mins) 
