@@ -6,6 +6,8 @@ W Kavanagh & N Merchant. Summer 2024
 
 A/D to move the paddle right and left.
 P to pause.
+R to restart.
+Esc to close game.
 
 ## Powerups
 
