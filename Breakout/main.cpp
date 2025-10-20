@@ -25,7 +25,7 @@ int main()
 
         gameManager.update(deltaTime);
 
-        window.clear();
+        window.clear(gameManager.GetBackground());
         gameManager.render();
         window.display();
     }

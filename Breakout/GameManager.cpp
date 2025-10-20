@@ -52,12 +52,16 @@ void GameManager::update(float dt)
     {
         if (!_pause && _pauseHold <= 0.f)
         {
+            _window->setMouseCursorVisible(true);
+            _window->setMouseCursorGrabbed(false);
             _pause = true;
             _masterText.setString("paused.");
             _pauseHold = PAUSE_TIME_BUFFER;
         }
         if (_pause && _pauseHold <= 0.f)
         {
+            _window->setMouseCursorVisible(false);
+            _window->setMouseCursorGrabbed(true);
             _pause = false;
             _masterText.setString("");
             _pauseHold = PAUSE_TIME_BUFFER;
@@ -66,6 +70,11 @@ void GameManager::update(float dt)
     if (_pause)
     {
         return;
+    }
+
+    //quick close for convenience
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+        _window->close();
     }
 
     // timer.
@@ -87,6 +96,8 @@ void GameManager::update(float dt)
     // move paddle if mouse is in the window
     if ((mousePos.x >= _paddle->getWidth() / 2 && mousePos.x < (_window->getSize().x - _paddle->getWidth()/2)) && (mousePos.y >= 0 && mousePos.y < _window->getSize().y))
     {
+        _window->setMouseCursorVisible(false);
+        _window->setMouseCursorGrabbed(true);
         _paddle->mouseMovement(dt);
     }
 
@@ -144,12 +155,50 @@ void GameManager::UpdateScreenShake(float dt)
 
 sf::Vector2f GameManager::GetRandomOffset()
 {
+    // ensures the offset is between -1 and 1
     sf::Vector2f off = sf::Vector2f(((rand() % 100) / 100 * 2 - 1), ((rand() % 100) / 100 * 2 - 1));
     return off;
 }
 
+
+void GameManager::ChangeBackground()
+{
+    switch (rand() % 5)
+    {
+    case 0:
+        printf("should be blueish");
+        _backgroundColour = sf::Color(100.f, 150.f, 200.f);
+        break;
+    case 1:
+        printf("should be black");
+        _backgroundColour = sf::Color(0.f, 0.f, 0.f);
+        break;
+    case 2:
+        printf("should be green");
+        _backgroundColour = sf::Color(5.f, 242.f, 68.f);        
+        break;
+    case 3:
+        printf("should be pink");
+        _backgroundColour = sf::Color(242.f, 5.f, 238.f);
+        break;
+    case 4:
+        printf("should be orange");
+        _backgroundColour = sf::Color(242.f, 171.f, 5.f);
+        break;
+    case 5:
+        break;
+    }
+}
+
+sf::Color GameManager::GetBackground()
+{
+    return _backgroundColour;
+}
+
 void GameManager::render()
 {
+    _window->clear(_backgroundColour);
+
     _paddle->render();
     _ball->render();
     _brickManager->render();

@@ -21,6 +21,8 @@ public:
     void powerupEffect(POWERUPS pu, float t);
     void StartShake(float duration, float intensity, float fade);
     void UpdateScreenShake(float dt);
+    void ChangeBackground();
+    sf::Color GetBackground();
 
     Paddle* getPaddle() const;
     BrickManager* getBrickManager() const;
@@ -38,6 +40,7 @@ private:
     bool _levelComplete;
     sf::Vector2i mousePos;
     std::pair<POWERUPS, float> _powerupInEffect;
+    sf::Color _backgroundColour = sf::Color::Black;
 
     sf::Font _font;
     sf::Text _masterText;
