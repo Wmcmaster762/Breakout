@@ -35,6 +35,11 @@ void GameManager::update(float dt)
     _ui->updatePowerupText(_powerupInEffect);
     _powerupInEffect.second -= dt;
     
+    //quick close for convenience
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+        _window->close();
+    }
+
     //restart game on press R
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
     {
@@ -76,11 +81,6 @@ void GameManager::update(float dt)
         return;
     }
 
-    //quick close for convenience
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-        _window->close();
-    }
-
     // timer.
     _time += dt;
 
@@ -117,7 +117,7 @@ void GameManager::loseLife()
     _ui->lifeLost(_lives);
 
     // trigger screen shake.
-    StartShake(0.5f,15.f,0.08f);
+    StartShake(1.5f,100.f,0.08f);
 }
 
 void GameManager::StartShake(float duration, float intensity, float fade)
@@ -157,6 +157,13 @@ void GameManager::UpdateScreenShake(float dt)
     }
 }
 
+sf::Vector2f GameManager::GetRandomOffset()
+{
+    // ensures the offset is between -1 and 1
+    sf::Vector2f off = sf::Vector2f(((rand() % 100) / 100 * 2 - 1), ((rand() % 100) / 100 * 2 - 1));
+    return off;
+}
+
 void GameManager::RestartGame()
 {
     // delete objects
@@ -180,14 +187,6 @@ void GameManager::RestartGame()
     // re-initialize deleted objects
     initialize();
 }
-
-sf::Vector2f GameManager::GetRandomOffset()
-{
-    // ensures the offset is between -1 and 1
-    sf::Vector2f off = sf::Vector2f(((rand() % 100) / 100 * 2 - 1), ((rand() % 100) / 100 * 2 - 1));
-    return off;
-}
-
 
 void GameManager::ChangeBackground()
 {

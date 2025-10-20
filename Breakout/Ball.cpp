@@ -28,7 +28,7 @@ void Ball::update(float dt)
         else
         {
             setFireBall(0);    // disable fireball
-            _sprite.setFillColor(sf::Color::Cyan);  // back to normal colour.
+            _sprite.setFillColor(_ballColour);  // back to normal colour.
         }        
     }
 
@@ -52,12 +52,14 @@ void Ball::update(float dt)
     // bounce on walls
     if ((position.x >= windowDimensions.x - 2 * RADIUS && _direction.x > 0) || (position.x <= 0 && _direction.x < 0))
     {
+        _gameManager->StartShake(0.5f, 15.f, 0.02f);
         _direction.x *= -1;
     }
 
     // bounce on ceiling
     if (position.y <= 0 && _direction.y < 0)
     {
+        _gameManager->StartShake(0.5f, 15.f, 0.02f);
         _direction.y *= -1;
     }
 
@@ -72,6 +74,7 @@ void Ball::update(float dt)
     // collision with paddle
     if (_sprite.getGlobalBounds().intersects(_gameManager->getPaddle()->getBounds()))
     {
+        changeColour();
         _direction.y *= -1; // Bounce vertically
 
         float paddlePositionProportion = (_sprite.getPosition().x - _gameManager->getPaddle()->getBounds().left) / _gameManager->getPaddle()->getBounds().width;
@@ -86,10 +89,12 @@ void Ball::update(float dt)
     if (_isFireBall) return; // no collisisons when in fireBall mode.
     if (collisionResponse == 1)
     {
+        changeColour();
         _direction.x *= -1; // Bounce horizontally
     }
     else if (collisionResponse == 2)
     {
+        changeColour();
         _direction.y *= -1; // Bounce vertically
     }
 }
@@ -112,7 +117,7 @@ void Ball::render()
             trailDot.setFillColor(sf::Color(flicker, flicker / 2, alpha)); // Orange flickering color
         }
         else {
-            trailDot.setFillColor(sf::Color(0, 255, 255, alpha));
+            trailDot.setFillColor(sf::Color(_ballColour.r,_ballColour.g,_ballColour.b, alpha));
         }
         _window->draw(trailDot);
     }
@@ -135,6 +140,30 @@ void Ball::setFireBall(float duration)
     }
     _isFireBall = false;
     _timeWithPowerupEffect = 0.f;    
+}
+
+void Ball::changeColour()
+{
+    switch (rand() % 5)
+    {
+    case 0:
+        _ballColour = sf::Color(234.f, 242.f, 5.f);
+        break;
+    case 1:
+        _ballColour = sf::Color(242.f, 5.f, 5.f);
+        break;
+    case 2:
+        _ballColour = sf::Color(6.f, 3.f, 128.f);
+        break;
+    case 3:
+        _ballColour = sf::Color(0.f, 255.f, 255.f);
+        break;
+    case 4:
+        _ballColour = sf::Color(133.f, 0.f, 153.f);
+        break;
+    case 5:
+        break;
+    }
 }
 
 void Ball::updateTrail(float dt)

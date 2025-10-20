@@ -15,12 +15,13 @@ public:
     void render();
     void setVelocity(float coeff, float duration);
     void setFireBall(float duration);
+    void changeColour();
 
 private:
     sf::CircleShape _sprite;
     sf::Vector2f _direction;
-    //sf::Vector2f _velocityVec;
     sf::RenderWindow* _window;
+    sf::Color _ballColour = sf::Color(0, 255, 255);
     float _velocity;
     bool _isAlive;
     bool _isFireBall;
@@ -38,10 +39,6 @@ private:
     const float trailUpdateInterval = 0.015f;
 
     void updateTrail(float dt);
-
-    //sf::Vector2f normalize(const sf::Vector2f& vec);
-    //sf::Vector2f reflect(const sf::Vector2f& velocity, const sf::Vector2f& normal);
-    //float dot(const sf::Vector2f& a, const sf::Vector2f& b)
 
 };
 
