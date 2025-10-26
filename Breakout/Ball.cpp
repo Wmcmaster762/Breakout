@@ -29,7 +29,20 @@ void Ball::update(float dt)
         {
             setFireBall(0);    // disable fireball
             _sprite.setFillColor(_ballColour);  // back to normal colour.
-        }        
+        } 
+        if (_isSticky) {
+            _isSticky = false; // set sticky to false when timer is <=0
+        }
+    }
+
+    if (_isStuckToPaddle) {
+        sf::FloatRect paddleBounds = _gameManager->getPaddle()->getBounds();
+        _sprite.setPosition(paddleBounds.left + paddleBounds.width / 2.f - RADIUS, paddleBounds.top - 2 * RADIUS); // set balls position to center top of the paddle
+
+        // check for launch key
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+            launchFromPaddle();
+        }
     }
 
     // Fireball effect
@@ -74,6 +87,10 @@ void Ball::update(float dt)
     // collision with paddle
     if (_sprite.getGlobalBounds().intersects(_gameManager->getPaddle()->getBounds()))
     {
+        if (_isSticky) {
+            stickToPaddle();
+            return; //skip the paddle bounce logic
+        }
         changeColour();
         _direction.y *= -1; // Bounce vertically
 
@@ -163,6 +180,35 @@ void Ball::changeColour()
         break;
     case 5:
         break;
+    }
+}
+
+// set ball to sticky if enable is true and set the powerups duration
+void Ball::setSticky(bool enable, float duration)
+{
+    if (enable) {
+        _isSticky = true;
+        _timeWithPowerupEffect = duration;
+    }
+    else {
+        _isSticky = false;
+        _timeWithPowerupEffect = false;
+    }
+}
+
+void Ball::stickToPaddle()
+{
+    _isStuckToPaddle = true;
+    _velocity = 0; // stop the ball from moving
+}
+
+// launch the ball straight up if the ball is stuck to the paddle
+void Ball::launchFromPaddle()
+{
+    if (_isStuckToPaddle) {
+        _isStuckToPaddle = false;
+        _velocity = VELOCITY; // reset the velocity
+        _direction = sf::Vector2f(0.f, -1.0f); //launch straight up
     }
 }
 

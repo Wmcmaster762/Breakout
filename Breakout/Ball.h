@@ -16,6 +16,9 @@ public:
     void setVelocity(float coeff, float duration);
     void setFireBall(float duration);
     void changeColour();
+    void setSticky(bool enable, float duration);
+    void stickToPaddle();
+    void launchFromPaddle();
 
 private:
     sf::CircleShape _sprite;
@@ -25,6 +28,8 @@ private:
     float _velocity;
     bool _isAlive;
     bool _isFireBall;
+    bool _isSticky;
+    bool _isStuckToPaddle;
     float _timeWithPowerupEffect;
 
     GameManager* _gameManager;  // Reference to the GameManager
